@@ -16,11 +16,38 @@ public class SalesProjectCourseApplication {
     @Bean
     public CommandLineRunner init(@Autowired ClientRepository clientRepository) {
         return args -> {
+            System.out.println("Saving");
             clientRepository.save(new Client("Moab"));
             clientRepository.save(new Client("Joseph"));
 
             List<Client> clients = clientRepository.getAll();
             clients.forEach(System.out::println);
+
+            System.out.println("Updating");
+            clients.forEach(client -> {
+                client.setName(client.getName() + " updated");
+                clientRepository.update(client);
+            });
+
+            clients = clientRepository.getAll();
+            clients.forEach(System.out::println);
+
+            System.out.println("Searching by name");
+            clientRepository.searchByName("Joseph").forEach(System.out::println);
+
+            System.out.println("Deleting");
+            clientRepository.getAll().forEach(client -> {
+                clientRepository.delete(client);
+            });
+
+            clients = clientRepository.getAll();
+
+            if(clients.isEmpty()) {
+                System.out.println("Empty");
+            }
+
+            clients.forEach(System.out::println);
+
         };
     }
 
