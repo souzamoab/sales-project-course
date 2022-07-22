@@ -8,8 +8,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.List;
-
 @SpringBootApplication
 public class SalesProjectCourseApplication {
 
@@ -20,33 +18,13 @@ public class SalesProjectCourseApplication {
             clientRepository.save(new Client("Moab"));
             clientRepository.save(new Client("Joseph"));
 
-            List<Client> clients = clientRepository.findAll();
-            clients.forEach(System.out::println);
+            boolean exists = clientRepository.existsByName("Moab");
+            System.out.println("Have a client with name Moab? " + exists);
 
-            System.out.println("Updating");
-            clients.forEach(client -> {
-                client.setName(client.getName() + " updated");
-                clientRepository.save(client);
-            });
+            clientRepository.deleteByName("Moab");
 
-            clients = clientRepository.findAll();
-            clients.forEach(System.out::println);
-
-            System.out.println("Searching by name");
-            clientRepository.findByNameLike("Joseph").forEach(System.out::println);
-
-            System.out.println("Deleting");
-            clientRepository.findAll().forEach(client -> {
-                clientRepository.delete(client);
-            });
-
-            clients = clientRepository.findAll();
-
-            if(clients.isEmpty()) {
-                System.out.println("Empty");
-            }
-
-            clients.forEach(System.out::println);
+            exists = clientRepository.existsByName("Moab");
+            System.out.println("Have a client with name Moab? " + exists + ", because he's deleted!");
 
         };
     }
