@@ -20,27 +20,27 @@ public class SalesProjectCourseApplication {
             clientRepository.save(new Client("Moab"));
             clientRepository.save(new Client("Joseph"));
 
-            List<Client> clients = clientRepository.getAll();
+            List<Client> clients = clientRepository.findAll();
             clients.forEach(System.out::println);
 
             System.out.println("Updating");
             clients.forEach(client -> {
                 client.setName(client.getName() + " updated");
-                clientRepository.update(client);
+                clientRepository.save(client);
             });
 
-            clients = clientRepository.getAll();
+            clients = clientRepository.findAll();
             clients.forEach(System.out::println);
 
             System.out.println("Searching by name");
-            clientRepository.searchByName("Joseph").forEach(System.out::println);
+            clientRepository.findByNameLike("Joseph").forEach(System.out::println);
 
             System.out.println("Deleting");
-            clientRepository.getAll().forEach(client -> {
+            clientRepository.findAll().forEach(client -> {
                 clientRepository.delete(client);
             });
 
-            clients = clientRepository.getAll();
+            clients = clientRepository.findAll();
 
             if(clients.isEmpty()) {
                 System.out.println("Empty");
