@@ -1,8 +1,6 @@
 package com.msdev.sales.project.course.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -20,7 +18,9 @@ public class Client {
     @Column(name = "name", length = 100)
     private String name;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Order> orders;
 
     public Client(String name) {
