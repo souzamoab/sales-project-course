@@ -36,7 +36,7 @@ public class ClientController {
         return ResponseEntity.status(201).body(clientSaved);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteClient(@PathVariable Integer id) {
 
         Optional<Client> client = clientRepository.findById(id);
@@ -47,6 +47,19 @@ public class ClientController {
         }
 
         return ResponseEntity.notFound().build();
+
+    }
+
+    @PutMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<?> updateClient(@PathVariable Integer id,
+                                               @RequestBody Client client) {
+
+        return clientRepository.findById(id).map(clientToUpdate -> {
+           clientToUpdate.setName(client.getName());
+           clientRepository.save(clientToUpdate);
+           return ResponseEntity.noContent().build();
+        }).orElseGet(() -> ResponseEntity.notFound().build());
 
     }
 
