@@ -19,6 +19,9 @@ public class Client {
     @Column(name = "name", length = 100)
     private String name;
 
+    @Column(name = "cpf", length = 11)
+    private String cpf;
+
     @JsonIgnore
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
