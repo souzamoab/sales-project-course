@@ -50,9 +50,9 @@ public class ClientController {
     public ResponseEntity<?> updateClient(@PathVariable Integer id,
                                                @RequestBody Client client) {
 
-        return clientRepository.findById(id).map(clientToUpdate -> {
-           clientToUpdate.setName(client.getName());
-           clientRepository.save(clientToUpdate);
+        return clientRepository.findById(id).map(clientFound -> {
+           clientFound.setName(client.getName());
+           clientRepository.save(clientFound);
            return ResponseEntity.noContent().build();
         }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
 
