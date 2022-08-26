@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,6 +53,11 @@ public class OrderServiceImpl implements OrderService {
         order.setItems(items);
 
         return order;
+    }
+
+    @Override
+    public Optional<Order> getOrderData(Integer id) {
+        return orderRepository.findByIdFetchItems(id);
     }
 
     private List<OrderItem> convertItems(Order order, List<OrderItemDTO> items) {
