@@ -14,6 +14,6 @@ public class OrderDTO {
 
     private Integer clientId;
     private BigDecimal total;
-    private List<OrderItemDTO> orders;
+    private List<OrderItemDTO> items;
 
 }

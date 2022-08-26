@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -31,6 +32,6 @@ public class Order {
     private BigDecimal total;
 
     @OneToMany(mappedBy = "order")
-    private Set<OrderItem> items;
+    private List<OrderItem> items;
 
 }
