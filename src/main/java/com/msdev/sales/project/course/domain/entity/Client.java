@@ -2,8 +2,10 @@ package com.msdev.sales.project.course.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Entity
@@ -17,9 +19,12 @@ public class Client {
     private Integer id;
 
     @Column(name = "name", length = 100)
+    @NotEmpty(message = "{field.name.not.empty}")
     private String name;
 
     @Column(name = "cpf", length = 11)
+    @NotEmpty(message = "{field.cpf.not.empty}")
+    @CPF(message = "{field.cpf.valid}")
     private String cpf;
 
     @JsonIgnore

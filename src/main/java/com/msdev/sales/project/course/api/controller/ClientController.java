@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<Client> saveClient(@RequestBody Client client) {
+    public ResponseEntity<Client> saveClient(@RequestBody @Valid Client client) {
         Client clientSaved = clientRepository.save(client);
         return ResponseEntity.status(HttpStatus.CREATED).body(clientSaved);
     }
