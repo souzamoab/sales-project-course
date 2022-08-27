@@ -6,11 +6,13 @@ import com.msdev.sales.project.course.domain.entity.Client;
 import com.msdev.sales.project.course.domain.entity.Order;
 import com.msdev.sales.project.course.domain.entity.OrderItem;
 import com.msdev.sales.project.course.domain.entity.Product;
+import com.msdev.sales.project.course.domain.enums.OrderStatus;
 import com.msdev.sales.project.course.domain.repository.ClientRepository;
 import com.msdev.sales.project.course.domain.repository.OrderItemRepository;
 import com.msdev.sales.project.course.domain.repository.OrderRepository;
 import com.msdev.sales.project.course.domain.repository.ProductRepository;
 import com.msdev.sales.project.course.exception.BusinessRuleException;
+import com.msdev.sales.project.course.exception.OrderNotFoundException;
 import com.msdev.sales.project.course.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +47,7 @@ public class OrderServiceImpl implements OrderService {
         order.setTotal(orderDTO.getTotal());
         order.setOrderDate(LocalDate.now());
         order.setClient(client);
+        order.setOrderStatus(OrderStatus.DONE);
 
         List<OrderItem> items = convertItems(order, orderDTO.getItems());
         orderRepository.save(order);
@@ -58,6 +61,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<Order> getOrderData(Integer id) {
         return orderRepository.findByIdFetchItems(id);
+    }
+
+    @Override
+    @Transactional
+    public void updateStatus(Integer id, OrderStatus orderStatus) {
+        orderRepository.findById(id)
+                .map(order -> {
+                    order.setOrderStatus(orderStatus);
+                    return orderRepository.save(order);
+                }).orElseThrow(() -> new OrderNotFoundException("Order not found."));
     }
 
     private List<OrderItem> convertItems(Order order, List<OrderItemDTO> items) {

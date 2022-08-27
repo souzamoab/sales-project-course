@@ -3,8 +3,10 @@ package com.msdev.sales.project.course.api.controller;
 import com.msdev.sales.project.course.api.controller.dto.OrderDTO;
 import com.msdev.sales.project.course.api.controller.dto.OrderDataDTO;
 import com.msdev.sales.project.course.api.controller.dto.OrderItemDataDTO;
+import com.msdev.sales.project.course.api.controller.dto.UpdateStatusOrderDTO;
 import com.msdev.sales.project.course.domain.entity.Order;
 import com.msdev.sales.project.course.domain.entity.OrderItem;
+import com.msdev.sales.project.course.domain.enums.OrderStatus;
 import com.msdev.sales.project.course.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,6 +40,14 @@ public class OrderController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found."));
     }
 
+    @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStatus(@PathVariable Integer id,
+                             @RequestBody UpdateStatusOrderDTO updateStatusOrderDTO) {
+        String updateStatus = updateStatusOrderDTO.getStatusUpdated();
+        orderService.updateStatus(id, OrderStatus.valueOf(updateStatus));
+    }
+
     private OrderDataDTO convert(Order order) {
         return OrderDataDTO.builder()
                 .orderId(order.getId())
@@ -45,6 +55,7 @@ public class OrderController {
                 .cpf(order.getClient().getCpf())
                 .clientName(order.getClient().getName())
                 .total(order.getTotal())
+                .orderStatus(order.getOrderStatus().name())
                 .items(convert(order.getItems()))
                 .build();
     }
