@@ -8,7 +8,7 @@ import com.msdev.sales.project.course.domain.entity.Order;
 import com.msdev.sales.project.course.domain.entity.OrderItem;
 import com.msdev.sales.project.course.domain.enums.OrderStatus;
 import com.msdev.sales.project.course.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/orders")
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
 
     @PostMapping
     public ResponseEntity<Integer> save(@RequestBody OrderDTO orderDTO) {

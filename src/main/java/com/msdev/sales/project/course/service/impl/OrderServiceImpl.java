@@ -14,7 +14,7 @@ import com.msdev.sales.project.course.domain.repository.ProductRepository;
 import com.msdev.sales.project.course.exception.BusinessRuleException;
 import com.msdev.sales.project.course.exception.OrderNotFoundException;
 import com.msdev.sales.project.course.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,19 +24,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
-
-    @Autowired
-    private ClientRepository clientRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private OrderItemRepository orderItemRepository;
+    private final OrderRepository orderRepository;
+    private final ClientRepository clientRepository;
+    private final ProductRepository productRepository;
+    private final OrderItemRepository orderItemRepository;
 
     @Override
     @Transactional

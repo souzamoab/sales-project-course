@@ -2,7 +2,7 @@ package com.msdev.sales.project.course.api.controller;
 
 import com.msdev.sales.project.course.domain.entity.Client;
 import com.msdev.sales.project.course.domain.repository.ClientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
@@ -14,11 +14,11 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/clients")
 public class ClientController {
 
-    @Autowired
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
 
     @GetMapping("/{id}")
     public ResponseEntity<Client> getClientById(@PathVariable Integer id) {
