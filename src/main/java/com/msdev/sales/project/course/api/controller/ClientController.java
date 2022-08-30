@@ -49,7 +49,7 @@ public class ClientController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateClient(@PathVariable Integer id,
-                                               @RequestBody Client client) {
+                                          @RequestBody @Valid Client client) {
 
         return clientRepository.findById(id).map(clientFound -> {
            clientFound.setName(client.getName());
