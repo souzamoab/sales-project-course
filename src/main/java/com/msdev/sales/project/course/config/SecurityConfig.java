@@ -4,6 +4,7 @@ import com.msdev.sales.project.course.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,14 +32,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
+        http.csrf().disable().authorizeRequests()
                 .antMatchers("/api/clients/**")
-                .hasAnyRole("USER", "ADMIN")
+                    .hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/products/**")
-                .hasAnyRole("ADMIN")
+                    .hasAnyRole("ADMIN")
                 .antMatchers("/api/orders/**")
-                .hasAnyRole("USER", "ADMIN")
+                    .hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.POST,"/api/users/**")
+                    .permitAll()
+                .anyRequest().authenticated()
                 .and().httpBasic();
     }
 }
