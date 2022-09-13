@@ -2,6 +2,7 @@ package com.msdev.sales.project.course.service.impl;
 
 import com.msdev.sales.project.course.domain.entity.UserEntity;
 import com.msdev.sales.project.course.domain.repository.UserRepository;
+import com.msdev.sales.project.course.exception.InvalidPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +25,17 @@ public class UserServiceImpl implements UserDetailsService {
     @Transactional
     public UserEntity save(UserEntity user) {
         return userRepository.save(user);
+    }
+
+    public UserDetails authenticate(UserEntity user) {
+        UserDetails userDetails = loadUserByUsername(user.getUserName());
+        boolean isPasswordMatches = passwordEncoder.matches(user.getPassword(), userDetails.getPassword());
+
+        if(isPasswordMatches) {
+            return userDetails;
+        }
+
+        throw new InvalidPasswordException();
     }
 
     @Override
